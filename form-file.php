@@ -4,6 +4,7 @@
     $key1=$_POST['key'];    
     array_pop($key1);
    // print_r($key1);die();
+    $key2=get_option('Titlekey');
 
     
     $title=get_option('TitleItem');
@@ -28,8 +29,7 @@
     $newVal=get_option('TitleItem');
 
 
-
-    $key2=get_option('Titlekey');
+    
     $key3=array_merge($key2,$key1);
     update_option('Titlekey',$key3);
     $key4=get_option('Titlekey');
@@ -47,9 +47,6 @@
     
 
     
-
-
-
     $description=get_option('TitleDescription');
     $d=$_POST['TitleDescription'];
     array_pop($d);
@@ -97,14 +94,14 @@
 
 <div class="tab">
   <button class="tablinks" onclick="openCity(event, 'London')" >Add Custom Fields</button>
-  <button class="tablinks" onclick="openCity(event, 'Paris')" id="defaultOpen">List All Custom Fields</button>
+  <button class="tablinks" onclick="openCity(event, 'Paris')" id="defaultOpen">Edit Custom Fields</button>
 </div>
 
 
 
 <div id="Paris" class="tabcontent">
-  <h3>Listing and Editing Tab</h3>
-  <p>Listing all the custom Fields</p> 
+  <h3>Editing Tab</h3>
+  <p>Editing the custom Fields</p> 
 
 <form method="post" id="update-form">
   <?php $options = get_option('TitleMain') ?>
@@ -132,15 +129,15 @@
     <tr>
       <td><input name="checkbox" type="checkbox" value="<?php echo esc_attr( $option['key'] );?>"></td>
 
-      <td><label>Field<?=  $i?>:</label></td>
+      <td><label class="heading">Field<?=  $i?>:</label></td>
       <td width="15%">
         <input type="text" class="head" placeholder="Title" name="TitleItem[]" value="<?php echo esc_attr( $option['title'] ); ?>" />
       </td>
 
-      <td>
-      <span class="notice-shortcode"><?php esc_html_e('Shortcode is:'); ?> <b><?php echo '[myshortCode key='.'"'.$option['key'].'"'.']'; ?></b>
+<!--       <td>
+      <span class="notice-shortcode"><b><?php echo '[myshortCode key='.'"'.$option['key'].'"'.']'; ?></b>
         </span>
-      </td>
+      </td> -->
 
        <td>
         <input type="hidden" name="key[]" title="key" value="<?php echo esc_attr( $option['key'] ); ?>">
@@ -149,12 +146,12 @@
       <!-- <td><label>Description<?=  $i?>:</label></td> -->
     <?php if($option['select']=='text') {?>
       <td width="15%">
-        <input type="text" class="subhead" name="TitleDescription[]" value="<?php echo esc_attr( $option['des'] ); ?>" />
+        <input type="text" class="subhead" name="TitleDescription[]" readonly/>
       </td>
 
-        <?php } else if($option['select']=='textarea'){?>
+        <?php } else if($option['select']=='textarea' || $option['select']=='quote'){?>
       <td width="70%">
-        <textarea placeholder="Description" class="subhead" cols="55" rows="5" name="TitleDescription[]"> <?php echo esc_attr( $option['des'] ); ?>
+        <textarea placeholder="Description" class="subhead" cols="55" rows="5" name="TitleDescription[]" readonly>
         </textarea>
       </td>
       
@@ -162,20 +159,39 @@
 
     <td>
       <label for="upload_image">
-      <input type="text" class="subhead" id="img<?=$j?>" name="TitleDescription[]" value="<?php echo esc_attr( $option['des'] ); ?>" /> 
-      <input class="upload_image_button" id="<?=$j?>" onclick="addimg(<?php echo $rep1 ?>)" type="button" value="Upload Image" />
+      <input type="text" class="subhead" id="img<?=$j?>" name="TitleDescription[]" readonly /> 
+      <input class="upload_image_button1" id="<?=$j?>" onclick="addimg(<?php echo $rep1 ?>)" type="button" value="Upload Image" />
       <br />Enter a URL or upload an image
       </label>
-      <div id="show-preview">
-<!--         <a class="boxclose" id="boxclose"></a> -->
+      <!-- <div id="show-preview">
+         <a class="boxclose" id="boxclose"></a> 
         <img style="max-width:450px;max-height:450px;" src="<?php echo esc_attr( $option['des'] ); ?>" id="image1">
-      </div>
+      </div> -->
     </td>
-
-
       <?php 
       $j=$j+1;
-    }?>
+    }
+    $a=$b=$c=$d='';
+
+    if($option['select']=='text')
+      $a="selected";
+    else if($option['select']=='textarea')
+      $b="selected";
+    else if($option['select']=='image')
+      $c="selected";
+    else if($option['select']=='quote')
+      $d="selected";
+    ?>
+
+      <td>
+        <select name="selectType[]">
+          <option value="text" <?php echo $a?> >Text</option>
+          <option value="textarea" <?php echo $b?> >Textarea</option>
+          <option value="image"<?php echo $c?> >Image</option>
+          <option value="quote" <?php echo $d?> >Quote</option>
+        </select>
+      </td>
+
       
     <td width="15%"><a class="button remove-row" onclick="remove(<?php echo $key?>)" href="#1">Remove</a></td>
    
@@ -186,9 +202,9 @@
   </tbody>
 
 </table>
-<button type="button" id="update-button" onclick="updateData()">Update Data</button>
+<button type="button" id="update-button" onclick="updateData()">Update Fields</button>
 
-<button type="button" id="remove-button" onclick="removeRows()">Remove Selected Rows</button>
+<button type="button" id="remove-button" onclick="removeRows()">Remove Selected Fields</button>
 <?php // submit_button(); ?>
 </form>
 
@@ -232,6 +248,7 @@
           <option value="text">Text</option>
           <option value="textarea">Textarea</option>
           <option value="image">Image</option>
+          <option value="quote">Quote</option>
         </select>
       </td>
 
@@ -260,6 +277,7 @@
           <option value="text">Text</option>
           <option value="textarea">Textarea</option>
           <option value="image">Image</option>
+          <option value="quote">Quote</option>
         </select>
       </td>
 

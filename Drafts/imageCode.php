@@ -276,3 +276,80 @@ WPMU::get_instance();
 
 
       ?>
+
+
+
+
+            <td>
+      <span class="notice-shortcode"><?php esc_html_e('Shortcode is:'); ?> <b><?php echo '[myshortCode key='.'"'.$option['key'].'"'.']'; ?></b>
+        </span>
+      </td>
+
+
+
+
+
+
+
+       //$keyarr = get_option('Titlekey');
+        $oldarr1 = get_option('TitleMain');
+        $sel1 = get_option('selectType');
+        $dess1=get_option('TitleDescription');
+        $numbs1 = count($sel1);
+
+        //print_r($oldarr[0]);die();
+
+
+        $params1 = array();
+        parse_str($_POST['data'], $params1);
+        //print_r($params1);die();
+
+        $titarr1 = array();
+        $desarr1 = array();
+        $keyarr1 = array();
+        
+        //print_r($oldarr[0]['title']);die();   //sharma
+
+        //print_r($params['TitleItem'][0]);die();  //sharmaaa
+        
+        $numb1 = count($params1['TitleItem']);
+
+        for($i=0;$i<$numb;$i++)
+        {
+          $titarr1[$i] = $oldarr1[$i]['title'];
+
+          if($oldarr1[$i]['title'] != $params1['TitleItem'][$i])
+          {
+            $oldarr1[$i]['title']=$params1['TitleItem'][$i];
+
+            $titarr1[$i] = $params1['TitleItem'][$i];
+          }
+            // $str = strtolower($params['TitleItem'][$i]);
+
+            // $id = preg_replace('/\s+/', '_', $str);
+
+
+            // $params['key'][$i] = 'hr'."_".$id."_".rand(0,999);
+            // $keyarr[$i] = $params['key'][$i];
+
+        }
+
+        $numbd1 = count($params1['TitleDescription']);
+
+        for($j=0;$j<$numbd;$j++)
+        {
+          $desarr1[$j] = $oldarr1[$j]['des'];
+
+          if($oldarr1[$j]['des'] != $params1['TitleDescription'][$j])
+          {
+            $oldarr1[$j]['des'] = $params1['TitleDescription'][$j];
+
+            $desarr1[$j] = $params1['TitleDescription'][$j];
+          }
+        }
+
+         update_option('TitleMain',$oldarr1);
+         update_option('TitleItem',$titarr1);
+         update_option('TitleDescription',$desarr1);
+       //  update_option('Titlekey',$keyarr);
+        //print_r($titarr);

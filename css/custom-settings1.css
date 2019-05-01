@@ -128,7 +128,7 @@ a.boxclose{
 
 
 .form-table td {
-  padding: 15px 4px !important;  
+  padding: 35px 4px !important;  
 }
 
 
@@ -179,3 +179,32 @@ border-width: 1px;
 cursor: pointer;
 
 }
+
+
+span.notice-shortcode {
+    background-color: #fff;
+    padding: 0px;
+    border-left: #0C94BE 4px solid;
+    border-right: #0C94BE 4px solid;
+    margin-right: 295px;
+}
+
+
+input.head:focus {
+    outline: 0 !important; 
+    border: none !important;
+    box-shadow: 0 0 !important;
+}
+
+.heading{
+  font-family: Raleway;
+  font-size: 20px;
+  
+  font-style: italic;
+  text-decoration: none;
+  text-align: center;
+  line-height: 1.5em;
+
+}
+
+/*none | underline | overline | line-through | initial | inherit*/

@@ -14,7 +14,7 @@
         });
 
         // Get the element with id="defaultOpen" and click on it
-        document.getElementById("defaultOpen").click();
+         document.getElementById("defaultOpen").click();
 
         $( '.remove-row1' ).on('click', function() {
             $(this).parents('tr').remove();
@@ -76,12 +76,6 @@
     });
 
 
-     $('#boxclose').click(function(){
-        document.getElementById("#image1").style.display = "none";
-
-
-     });
-
 });
 
     function remove(index){
@@ -140,7 +134,7 @@
     success : function(ans){
 
       //swal("Wonderful!", "Data has been updated", "success");
-      // window.location.reload(true);
+      
       setTimeout(function(){location.reload();},2000);
       console.log(ans);
     }
@@ -199,6 +193,42 @@ function removeRows(){
 
   //alert("My favourite sports are: " + favorite.join(";"));
 }
+
+
+
+ function updateData1()
+ {
+    //alert(imgurl);
+
+    swal({
+    title: "Are you sure?",
+    text: "Do you want to update the data?",
+    icon: "warning",
+    buttons: true,
+    dangerMode: true,
+  })
+  .then((willDelete) => {
+    if (willDelete) {
+  var formData = jQuery('#update-form1').serialize();
+  jQuery.ajax({
+    type : 'post',
+    url : ajaxloadpostajax.ajaxurl,
+    data : {'data' : formData,'action' : 'update_data1'},
+    success : function(ans){
+
+      //swal("Wonderful!", "Data has been updated", "success");
+      
+      setTimeout(function(){location.reload();},2000);
+      console.log(ans);
+    }
+  });
+
+}else{
+  swal("Warning", "Data is not Updated!", "error");
+}
+});
+}
+
 
 
 

@@ -60,14 +60,12 @@ class MyPlugin{
       {
        $this->my_plugin_screen_name = add_menu_page(
         'My Plugin', 
-        'Custom Fields', 
+        'My Plugin', 
         'manage_options',
         __FILE__, 
         array($this, 'RenderPage')
         
         );
-
-       $this->my_plugin_screen_name = add_submenu_page(__FILE__, 'Custom', 'List Custom Fields', 'manage_options', __FILE__.'/custom', array($this,'render_custom_page'));
       }
       
       public function RenderPage(){
@@ -80,16 +78,6 @@ class MyPlugin{
       </div>
        <?php
       }
-
-      public function render_custom_page(){
-   ?>
-   <div class='wrap'>
-    <h2>Listing Custom Fields</h2>
-     <?php include 'display.php';?>
-
-   </div>
-   <?php
- }
 
       // function register_mysettings() { // whitelist options
       // register_setting( 'myoption-group', 'TitleItem' );
@@ -137,12 +125,10 @@ class MyPlugin{
 
       function update_data()
       {
-        //$st=$_POST['selectType'];die();
-
         //$keyarr = get_option('Titlekey');
         $oldarr = get_option('TitleMain');
         $sel = get_option('selectType');
-        //$dess=get_option('TitleDescription');
+        $dess=get_option('TitleDescription');
         $numbs = count($sel);
 
         //print_r($oldarr[0]);die();
@@ -155,20 +141,12 @@ class MyPlugin{
         $titarr = array();
         $desarr = array();
         $keyarr = array();
-        $selarr = array();
         
         //print_r($oldarr[0]['title']);die();   //sharma
 
         //print_r($params['TitleItem'][0]);die();  //sharmaaa
         
         $numb = count($params['TitleItem']);
-
-        for($h=0;$h<$numb;$h++)
-        {
-          if($sel[$h] != $params['selectType'][$h])
-            $oldarr[$h]['select'] = $params['selectType'][$h];
-            $selarr[$h] = $params['selectType'][$h];
-        }
 
         for($i=0;$i<$numb;$i++)
         {
@@ -180,35 +158,34 @@ class MyPlugin{
 
             $titarr[$i] = $params['TitleItem'][$i];
           }
-            // $str = strtolower($params['TitleItem'][$i]);
+            $str = strtolower($params['TitleItem'][$i]);
 
-            // $id = preg_replace('/\s+/', '_', $str);
+            $id = preg_replace('/\s+/', '_', $str);
 
 
-            // $params['key'][$i] = 'hr'."_".$id."_".rand(0,999);
-            // $keyarr[$i] = $params['key'][$i];
+            $params['key'][$i] = 'hr'."_".$id."_".rand(0,999);
+            $keyarr[$i] = $params['key'][$i];
 
         }
 
-        // $numbd = count($params['TitleDescription']);
+        $numbd = count($params['TitleDescription']);
 
-        // for($j=0;$j<$numbd;$j++)
-        // {
-        //   $desarr[$j] = $oldarr[$j]['des'];
+        for($j=0;$j<$numbd;$j++)
+        {
+          $desarr[$j] = $oldarr[$j]['des'];
 
-        //   if($oldarr[$j]['des'] != $params['TitleDescription'][$j])
-        //   {
-        //     $oldarr[$j]['des'] = $params['TitleDescription'][$j];
+          if($oldarr[$j]['des'] != $params['TitleDescription'][$j])
+          {
+            $oldarr[$j]['des'] = $params['TitleDescription'][$j];
 
-        //     $desarr[$j] = $params['TitleDescription'][$j];
-        //   }
-        // }
+            $desarr[$j] = $params['TitleDescription'][$j];
+          }
+        }
 
          update_option('TitleMain',$oldarr);
          update_option('TitleItem',$titarr);
-         update_option('selectType',$selarr);
-         //update_option('TitleDescription',$desarr);
-       //  update_option('Titlekey',$keyarr);
+         update_option('TitleDescription',$desarr);
+         update_option('Titlekey',$keyarr);
         //print_r($titarr);
 
         die();
@@ -279,44 +256,6 @@ class MyPlugin{
       }
 
 
-      function update_data1()
-      {
-       
-        $oldarr1 = get_option('TitleMain');
-        $c=count($oldarr1);
-        //print_r($oldarr1[0]['des']);die();
-
-        $params1 = array();
-        parse_str($_POST['data'], $params1);
-        //print_r($params1);die();
-
-        $descarr = array();
-        $titlarr = array();
-
-        $descarr = $params1['TitleDescription'];
-        //print_r($descarr);die();
-        
-
-        for($r=0;$r<$c;$r++)
-        {
-          $oldarr1[$r]['des'] = $descarr[$r];
-
-          // if($oldarr1[$r]['title'] != $params1['TitleItem'][$r])
-          // {
-          //   $oldarr1[$r]['title'] = $params1['TitleItem'][$r];
-            
-          //   $titlarr[$r] = $params1['TitleItem'][$r]; 
-          // }
-        }
-        //print_r($oldarr1);die();
-       // update_option('TitleItem',$titlarr);
-        update_option('TitleDescription',$descarr);
-        update_option('TitleMain',$oldarr1);
-        die();
-      }
-
-
-
       function myshortCode($atts){
         $options = get_option('TitleMain');
         
@@ -328,7 +267,6 @@ class MyPlugin{
 
         $desc='';
         $k='';
-        $tit='';
         
         foreach ($options as $keys => $option) {
         
@@ -342,20 +280,13 @@ class MyPlugin{
         if(isset($options[$k]['des']))
         {
           $desc = $options[$k]['des'];
-          $tit = $options[$k]['title'];
         }
 
         if($options[$k]['select']=='image')
         {
           return "<img src='{$desc}' style='max-width:450px;max-height:450px;'> ";
         }
-        else if($options[$k]['select']=='quote'){
-          return " <blockquote class='wp-block-quote'>
-                  <p class='w3-large'><i>'{$desc}'</i></p>
-                  <p>-{$tit}</p>
-                </blockquote>";
-
-        }else{
+        else{
         return $desc;
       }
     }
@@ -380,10 +311,6 @@ class MyPlugin{
         
         add_action('wp_ajax_remove_rows',array($this,'remove_rows') );
         add_action('wp_ajax_nopriv_remove_rows',array($this,'remove_rows') );
-
-
-        add_action('wp_ajax_update_data1',array($this,'update_data1') );
-        add_action('wp_ajax_nopriv_update_data1',array($this,'update_data1') );
           
      
       } 
